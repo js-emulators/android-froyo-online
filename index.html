@@ -1,10 +1,13 @@
+
 <style>
   #error_reload {
     display: none;
   }
+   #fullscreen {
+    display: none;
+  }
 </style>
 <body onerror="errorstat();">
-  <script src="jsvm.js"></script>
   <h1>
    Android online
   </h1>
@@ -12,9 +15,14 @@
     <div style="white-space: pre; font: 14px monospace; line-height: 14px"></div>
     <canvas onclick="this.requestPointerLock();" style="display: none"></canvas>
 </div>
-<br></br>
+<br>
 <small id="status"></small>
 <button onclick="location.reload()" id="error_reload">Reload</button>
+<br>
+<button id="fullscreen" onclick="document.querySelector('canvas').requestFullscreen()">
+  Fullscreen
+  </button>
+    <script src="jsvm.js"></script>
   <script>
        function status(t){
       document.getElementById("status").innerText = "Status: " + t;
@@ -31,8 +39,9 @@
     const observer = new PerformanceObserver((list) => {
   for (const entry of list.getEntries()) {
     if (entry.initiatorType === "xmlhttprequest") {
-if (entry.name == location.origin + "/android_froyo.bin"){
+if (entry.name == "https://cdn.glitch.com/ef43011c-00fc-4e6b-a579-8324f40041af/android_froyo.bin"){
  status("Loaded VM image") 
+  document.getElementById("fullscreen").style.display = "block";
 }
     }
   }
@@ -41,21 +50,5 @@ if (entry.name == location.origin + "/android_froyo.bin"){
 observer.observe({
   entryTypes: ["resource"]
 });
-    
-  var h=new V86Starter({
-        screen_container: e,
-        bios: {
-            url: "https://cdn.glitch.com/d1197e36-c33d-426e-8e04-8bcd831e3db9%2Fseabios.bin?v=1617253300346",
-        },
-        vga_bios: {
-            url: "https://cdn.glitch.com/d1197e36-c33d-426e-8e04-8bcd831e3db9%2Fvgabios.bin?v=1617253288370",
-        },
-        initial_state: { 
-        url: "android_froyo.bin",
-        },
-       memory_size: 512 * 1024 * 1024,
-         vga_memory_size: 256 * 1024 * 1024,
-        autostart: true
-  });
   </script>
 </body>
